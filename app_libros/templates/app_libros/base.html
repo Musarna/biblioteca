@@ -1,0 +1,88 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Biblioteca Online{% endblock %}</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body class="bg-light">
+
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="{% url 'home' %}">Biblioteca</a>
+            <div class="collapse navbar-collapse">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item"><a class="nav-link" href="{% url 'home' %}">Inicio</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{% url 'libros' %}">Libros</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#">Reservas</a></li>
+                    
+                    {% if request.user.is_authenticated %}
+                        <!-- Menú desplegable con nombre del usuario -->
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle text-white fw-semibold" href="#" id="userDropdown"
+                                role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                👤 {{ request.user.username }}
+                            </a>
+                            <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
+                                <li><a class="dropdown-item" href="{% url 'mis_reservas' %}">Mis reservas</a></li>
+                                {% if request.user.is_superuser %}
+                                    <li><hr class="dropdown-divider"></li>
+                                    <li><a class="dropdown-item" href="/admin/">Panel de administración</a></li>
+                                {% endif %}
+                                <li><hr class="dropdown-divider"></li>
+                                <li>
+                                <form action="{% url 'logout' %}" method="post" class="dropdown-item p-0 m-0">
+                                    {% csrf_token %}
+                                    <button type="submit" class="btn btn-link dropdown-item text-danger w-100 text-start">
+                                    Cerrar sesión
+                                    </button>
+                                </form>
+                                </li>
+                            </ul>
+                        </li>
+                    {% else %}
+                        <!-- Si no está logueado -->
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'login' %}">Iniciar sesión</a>
+                        </li>
+                    {% endif %}
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Contenido principal -->
+    <div class="container mt-5">
+        {% if messages %}
+        {% for m in messages %}
+            <div class="alert alert-{{ m.tags }} alert-dismissible fade show" role="alert">
+            {{ m }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            </div>
+        {% endfor %}
+        {% endif %}
+
+        {% block content %}
+            {% if messages %}
+                {% for m in messages %}
+                    <div class="alert alert-{{ m.tags }} alert-dismissible fade show" role="alert">
+                        {{ m }}
+                        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                    </div>
+                {% endfor %}
+            {% endif %}
+
+        {% endblock %}
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-primary text-white text-center mt-5 p-3">
+        <p class="mb-0">&copy; 2025 Biblioteca Escolar Online</p>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

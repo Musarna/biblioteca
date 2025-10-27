@@ -1,0 +1,36 @@
+{% extends 'app_libros/base.html' %}
+{% block title %}Reserva de {{ libro.nombre }}{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+  <h2>Reservar: {{ libro.nombre }}</h2>
+  <p><strong>Autor:</strong> {{ libro.autor }}</p>
+  <p><strong>Género:</strong> {{ libro.genero }}</p>
+  <hr>
+
+  {% if reservas_existentes %}
+    <h5>Días ya reservados:</h5>
+    <ul>
+      {% for dia in reservas_existentes %}
+        <li>{{ dia|date:"Y-m-d" }}</li>
+      {% empty %}
+        <li>No hay reservas aún.</li>
+      {% endfor %}
+    </ul>
+  {% endif %}
+
+  <form method="post">
+    {% csrf_token %}
+    <div class="mb-3">
+      <label class="form-label">Selecciona la fecha de reserva:</label>
+      {{ form.fecha_reserva }}
+      {% for e in form.fecha_reserva.errors %}
+        <div class="text-danger small">{{ e }}</div>
+      {% endfor %}
+    </div>
+
+    <button type="submit" class="btn btn-primary">Confirmar reserva</button>
+    <a href="{% url 'libro_detalle' libro.id_libro %}" class="btn btn-outline-secondary">Cancelar</a>
+  </form>
+</div>
+{% endblock %}

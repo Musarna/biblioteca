@@ -1,0 +1,37 @@
+{% extends 'app_libros/base.html' %}
+{% block title %}Iniciar sesión{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+  <div class="col-md-4">
+    <h2 class="text-center mb-4">Iniciar Sesión</h2>
+
+    {# Errores generales del formulario (usuario/clave incorrectos) #}
+    {% if form.non_field_errors %}
+      <div class="alert alert-danger">
+        {% for e in form.non_field_errors %}{{ e }}<br>{% endfor %}
+      </div>
+    {% endif %}
+
+    <form method="post" novalidate>
+      {% csrf_token %}
+      {# Mantén la redirección si venía de una página protegida #}
+      {% if next %}<input type="hidden" name="next" value="{{ next }}">{% endif %}
+
+      <div class="mb-3">
+        <label class="form-label">Usuario</label>
+        <input type="text" name="username" class="form-control" required value="{{ form.username.value|default:'' }}">
+        {% for e in form.username.errors %}<div class="text-danger small">{{ e }}</div>{% endfor %}
+      </div>
+
+      <div class="mb-3">
+        <label class="form-label">Contraseña</label>
+        <input type="password" name="password" class="form-control" required>
+        {% for e in form.password.errors %}<div class="text-danger small">{{ e }}</div>{% endfor %}
+      </div>
+
+      <button type="submit" class="btn btn-primary w-100">Entrar</button>
+    </form>
+  </div>
+</div>
+{% endblock %}

@@ -1,0 +1,100 @@
+{% extends 'app_libros/base.html' %}
+
+{% block title %}Listado de Libros{% endblock %}
+
+{% block content %}
+<div class="d-flex align-items-center justify-content-between mb-3">
+  <h2 class="mb-0">Listado de Libros</h2>
+  {% if request.user.is_superuser %}
+  <a class="btn btn-success" href="{% url 'libro_crear' %}">+ Agregar Libro</a>
+  {% endif %}
+</div>
+
+{# mensajes flash opcionales #}
+{% if messages %}
+  {% for m in messages %}
+    <div class="alert alert-{{ m.tags }} alert-dismissible fade show" role="alert">
+      {{ m }}
+      <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+    </div>
+  {% endfor %}
+{% endif %}
+
+<form method="get" class="row g-2 mb-3">
+  <div class="col-sm-8 col-md-6">
+    <input name="q" value="{{ request.GET.q }}" type="text" class="form-control"
+           placeholder="Buscar por título o autor">
+  </div>
+  <div class="col-sm-12 col-md-2 d-grid">
+    <button class="btn btn-primary" type="submit">Buscar</button>
+  </div>
+</form>
+
+<div class="table-responsive">
+  <table class="table table-hover align-middle">
+    <thead class="table-light">
+      <tr>
+        <th>ID</th>
+        <th>Título</th>
+        <th>Género</th>
+        <th>Autor</th>
+        <th>Fecha de Creación</th>
+        <th>Sinopsis</th>
+        <th class="text-end" style="width:200px;">Acciones</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% if libros %}
+        {% for libro in libros %}
+          <tr>
+            <td>{{ libro.id_libro }}</td>
+            <td>{{ libro.nombre }}</td>
+            <td>{{ libro.genero }}</td>
+            <td>{{ libro.autor }}</td>
+            <td>{{ libro.fecha_creacion|date:"Y-m-d" }}</td>
+            <td style="max-width: 300px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
+              {{ libro.sinopsis }}
+            </td>
+            <td class="text-end">
+              <a href="{% url 'libro_detalle' libro.id_libro %}">
+                {{ libro.nombre }}
+              </a>
+              <a class="btn btn-sm btn-outline-secondary" href="{% url 'libro_detalle' libro.id_libro %}">Ver</a>
+              {% if request.user.is_superuser %}
+
+              <a class="btn btn-sm btn-outline-primary" href="{% url 'libro_editar' libro.id_libro %}">Editar</a>
+              <a class="btn btn-sm btn-outline-danger" href="{% url 'libro_eliminar' libro.id_libro %}">Eliminar</a>
+              {% endif %}
+            </td>
+          </tr>
+        {% endfor %}
+      {% else %}
+        <tr>
+          <td colspan="7" class="text-center text-muted py-4">
+            No se encontraron libros registrados.
+          </td>
+        </tr>
+      {% endif %}
+    </tbody>
+  </table>
+</div>
+
+{# paginación si la usas #}
+{% if page_obj %}
+<nav aria-label="Paginación">
+  <ul class="pagination justify-content-center">
+    <li class="page-item {% if not page_obj.has_previous %}disabled{% endif %}">
+      <a class="page-link" href="?page={{ page_obj.previous_page_number }}">Anterior</a>
+    </li>
+    {% for num in page_obj.paginator.page_range %}
+      <li class="page-item {% if page_obj.number == num %}active{% endif %}">
+        <a class="page-link" href="?page={{ num }}">{{ num }}</a>
+      </li>
+    {% endfor %}
+    <li class="page-item {% if not page_obj.has_next %}disabled{% endif %}">
+      <a class="page-link" href="?page={{ page_obj.next_page_number }}">Siguiente</a>
+    </li>
+  </ul>
+</nav>
+{% endif %}
+{% endblock %}

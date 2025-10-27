@@ -1,0 +1,18 @@
+{% extends 'app_libros/base.html' %}
+
+{% block title %}Eliminar Libro{% endblock %}
+
+{% block content %}
+<div class="card border-danger">
+  <div class="card-body">
+    <h2 class="mb-3 text-danger">Eliminar Libro</h2>
+    <p class="mb-4">¿Seguro que deseas eliminar el libro <strong>"{{ libro.nombre }}"</strong> de <em>{{ libro.autor }}</em>?</p>
+
+    <form method="post">
+      {% csrf_token %}
+      <button type="submit" class="btn btn-danger">Sí, eliminar</button>
+      <a class="btn btn-outline-secondary" href="{% url 'libros' %}">Cancelar</a>
+    </form>
+  </div>
+</div>
+{% endblock %}

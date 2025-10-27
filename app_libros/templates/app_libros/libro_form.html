@@ -1,0 +1,53 @@
+{% extends 'app_libros/base.html' %}
+
+{% block title %}
+{% if modo == 'crear' %}Nuevo Libro{% else %}Editar Libro{% endif %}
+{% endblock %}
+
+{% block content %}
+<div class="card shadow-sm">
+  <div class="card-body">
+    <h2 class="mb-3">
+      {% if modo == 'crear' %}Nuevo Libro{% else %}Editar Libro{% endif %}
+    </h2>
+
+    <form method="post" novalidate>
+      {% csrf_token %}
+      <div class="row g-3">
+        <div class="col-md-6">
+          <label class="form-label">Título</label>
+          {{ form.nombre }}
+          {% for e in form.nombre.errors %}<div class="text-danger small">{{ e }}</div>{% endfor %}
+        </div>
+        <div class="col-md-6">
+          <label class="form-label">Género</label>
+          {{ form.genero }}
+          {% for e in form.genero.errors %}<div class="text-danger small">{{ e }}</div>{% endfor %}
+        </div>
+        <div class="col-md-6">
+          <label class="form-label">Autor</label>
+          {{ form.autor }}
+          {% for e in form.autor.errors %}<div class="text-danger small">{{ e }}</div>{% endfor %}
+        </div>
+        <div class="col-md-6">
+          <label class="form-label">Fecha de creación</label>
+          {{ form.fecha_creacion }}
+          {% for e in form.fecha_creacion.errors %}<div class="text-danger small">{{ e }}</div>{% endfor %}
+        </div>
+        <div class="col-12">
+          <label class="form-label">Sinopsis</label>
+          {{ form.sinopsis }}
+          {% for e in form.sinopsis.errors %}<div class="text-danger small">{{ e }}</div>{% endfor %}
+        </div>
+      </div>
+
+      <div class="d-flex gap-2 mt-4">
+        <button type="submit" class="btn btn-primary">
+          {% if modo == 'crear' %}Crear{% else %}Guardar cambios{% endif %}
+        </button>
+        <a class="btn btn-outline-secondary" href="{% url 'libros' %}">Cancelar</a>
+      </div>
+    </form>
+  </div>
+</div>
+{% endblock %}

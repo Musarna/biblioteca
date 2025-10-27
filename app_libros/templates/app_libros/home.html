@@ -1,0 +1,12 @@
+{% extends 'app_libros/base.html' %}
+
+{% block title %}Inicio - Biblioteca{% endblock %}
+
+{% block content %}
+<div class="text-center">
+    <h1 class="display-5 mb-4">Bienvenido a la Biblioteca Escolar Online</h1>
+    <p class="lead">Busca, reserva y gestiona tus libros fácilmente.</p>
+    <a href="{% url 'libros' %}" class="btn btn-primary btn-lg mt-3">Explorar libros</a>
+
+</div>
+{% endblock %}
