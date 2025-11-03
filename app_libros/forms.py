@@ -31,7 +31,7 @@ class ReservaForm(forms.ModelForm):
         if fecha < hoy:
             raise forms.ValidationError("No puedes reservar para fechas pasadas.")
         if fecha > limite:
-            raise forms.ValidationError("Solo puedes reservar dentro de los próximos 14 días.")
+            raise forms.ValidationError("Solo puedes reservar dentro de los próximos 120 días.")
         return fecha
 
 GRUPOS_VALIDOS = ["Alumno", "Bibliotecario", "Admin"]
