@@ -26,7 +26,7 @@ class ReservaForm(forms.ModelForm):
     def clean_fecha_reserva(self):
         fecha = self.cleaned_data['fecha_reserva']
         hoy = date.today()
-        limite = hoy + timedelta(days=14)
+        limite = hoy + timedelta(days=120)
 
         if fecha < hoy:
             raise forms.ValidationError("No puedes reservar para fechas pasadas.")
