@@ -2,6 +2,7 @@
 from django.urls import path
 from . import views
 from .views import login_manual
+from . import views_cuentas 
 
 urlpatterns = [
     path('', views.home, name='home'),
