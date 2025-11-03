@@ -1,0 +1,33 @@
+{% extends 'app_libros/base.html' %}
+{% block title %}{{ 'Crear' if modo == 'crear' else 'Editar' }} usuario{% endblock %}
+{% block content %}
+<h2>{{ 'Crear' if modo == 'crear' else 'Editar' }} usuario{% if obj %}: {{ obj.username }}{% endif %}</h2>
+<form method="post" class="mt-3">
+  {% csrf_token %}
+  <div class="row">
+    <div class="col-md-6">
+      {{ form.username.label_tag }} {{ form.username|add_class:"form-control" }}{% if form.username.errors %}<div class="text-danger small">{{ form.username.errors }}</div>{% endif %}
+      {{ form.first_name.label_tag }} {{ form.first_name|add_class:"form-control" }}
+      {{ form.last_name.label_tag }} {{ form.last_name|add_class:"form-control" }}
+      {{ form.email.label_tag }} {{ form.email|add_class:"form-control" }}
+      {% if form.is_active %}{{ form.is_active.label_tag }} {{ form.is_active }}{% endif %}
+    </div>
+    <div class="col-md-6">
+      <label class="form-label d-block">Grupos</label>
+      {{ form.grupos }}
+      {% if modo == 'crear' %}
+        {{ form.password1.label_tag }} {{ form.password1|add_class:"form-control" }}
+        {{ form.password2.label_tag }} {{ form.password2|add_class:"form-control" }}
+      {% else %}
+        <div class="alert alert-info py-2 mt-2">Deja en blanco para no cambiar la contraseña.</div>
+        {{ form.password1.label_tag }} {{ form.password1|add_class:"form-control" }}
+        {{ form.password2.label_tag }} {{ form.password2|add_class:"form-control" }}
+      {% endif %}
+    </div>
+  </div>
+  <div class="mt-3">
+    <a href="{% url 'cuentas_list' %}" class="btn btn-secondary">Volver</a>
+    <button class="btn btn-primary" type="submit">Guardar</button>
+  </div>
+</form>
+{% endblock %}
