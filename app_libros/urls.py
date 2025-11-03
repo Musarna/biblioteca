@@ -21,7 +21,10 @@ urlpatterns = [
 
     path('whoami/', views.whoami),
 
-
+    path("cuentas/", views_cuentas.cuentas_list, name="cuentas_list"),
+    path("cuentas/crear/", views_cuentas.cuentas_create, name="cuentas_create"),
+    path("cuentas/<int:pk>/editar/", views_cuentas.cuentas_edit, name="cuentas_edit"),
+    path("cuentas/<int:pk>/eliminar/", views_cuentas.cuentas_delete, name="cuentas_delete"),
 
 
 
