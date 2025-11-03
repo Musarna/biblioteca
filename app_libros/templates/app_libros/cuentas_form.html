@@ -1,30 +1,88 @@
 {% extends 'app_libros/base.html' %}
-{% block title %}{{ 'Crear' if modo == 'crear' else 'Editar' }} usuario{% endblock %}
+
+{% block title %}
+{% if modo == 'crear' %}Crear usuario{% else %}Editar usuario{% endif %}
+{% endblock %}
+
 {% block content %}
-<h2>{{ 'Crear' if modo == 'crear' else 'Editar' }} usuario{% if obj %}: {{ obj.username }}{% endif %}</h2>
+<h2>
+  {% if modo == 'crear' %}Crear usuario{% else %}Editar usuario{% endif %}
+  {% if obj %}<small class="text-muted">: {{ obj.username }}</small>{% endif %}
+</h2>
+
 <form method="post" class="mt-3">
   {% csrf_token %}
-  <div class="row">
+
+  <div class="row g-3">
     <div class="col-md-6">
-      {{ form.username.label_tag }} {{ form.username|add_class:"form-control" }}{% if form.username.errors %}<div class="text-danger small">{{ form.username.errors }}</div>{% endif %}
-      {{ form.first_name.label_tag }} {{ form.first_name|add_class:"form-control" }}
-      {{ form.last_name.label_tag }} {{ form.last_name|add_class:"form-control" }}
-      {{ form.email.label_tag }} {{ form.email|add_class:"form-control" }}
-      {% if form.is_active %}{{ form.is_active.label_tag }} {{ form.is_active }}{% endif %}
+      {# En "crear" existe username; en "editar" no necesariamente #}
+      {% if form.username %}
+        <div class="mb-3">
+          <label class="form-label">{{ form.username.label }}</label>
+          {{ form.username }}
+          {% if form.username.errors %}<div class="text-danger small">{{ form.username.errors }}</div>{% endif %}
+        </div>
+      {% endif %}
+
+      <div class="mb-3">
+        <label class="form-label">{{ form.first_name.label }}</label>
+        {{ form.first_name }}
+        {% if form.first_name.errors %}<div class="text-danger small">{{ form.first_name.errors }}</div>{% endif %}
+      </div>
+
+      <div class="mb-3">
+        <label class="form-label">{{ form.last_name.label }}</label>
+        {{ form.last_name }}
+        {% if form.last_name.errors %}<div class="text-danger small">{{ form.last_name.errors }}</div>{% endif %}
+      </div>
+
+      <div class="mb-3">
+        <label class="form-label">{{ form.email.label }}</label>
+        {{ form.email }}
+        {% if form.email.errors %}<div class="text-danger small">{{ form.email.errors }}</div>{% endif %}
+      </div>
+
+      {% if form.is_active %}
+        <div class="form-check mb-3">
+          {{ form.is_active }} <label class="form-check-label">{{ form.is_active.label }}</label>
+        </div>
+      {% endif %}
     </div>
+
     <div class="col-md-6">
-      <label class="form-label d-block">Grupos</label>
-      {{ form.grupos }}
+      <div class="mb-3">
+        <label class="form-label d-block">Grupos / Roles</label>
+        {{ form.grupos }}
+        {% if form.grupos.errors %}<div class="text-danger small">{{ form.grupos.errors }}</div>{% endif %}
+      </div>
+
       {% if modo == 'crear' %}
-        {{ form.password1.label_tag }} {{ form.password1|add_class:"form-control" }}
-        {{ form.password2.label_tag }} {{ form.password2|add_class:"form-control" }}
+        <div class="mb-3">
+          <label class="form-label">{{ form.password1.label }}</label>
+          {{ form.password1 }}
+          {% if form.password1.errors %}<div class="text-danger small">{{ form.password1.errors }}</div>{% endif %}
+        </div>
+        <div class="mb-3">
+          <label class="form-label">{{ form.password2.label }}</label>
+          {{ form.password2 }}
+          {% if form.password2.errors %}<div class="text-danger small">{{ form.password2.errors }}</div>{% endif %}
+        </div>
       {% else %}
-        <div class="alert alert-info py-2 mt-2">Deja en blanco para no cambiar la contraseña.</div>
-        {{ form.password1.label_tag }} {{ form.password1|add_class:"form-control" }}
-        {{ form.password2.label_tag }} {{ form.password2|add_class:"form-control" }}
+        <div class="alert alert-info py-2">Deja en blanco para no cambiar la contraseña.</div>
+        <div class="mb-3">
+          <label class="form-label">{{ form.password1.label }}</label>
+          {{ form.password1 }}
+          {% if form.password1.errors %}<div class="text-danger small">{{ form.password1.errors }}</div>{% endif %}
+        </div>
+        <div class="mb-3">
+          <label class="form-label">{{ form.password2.label }}</label>
+          {{ form.password2 }}
+          {% if form.password2.errors %}<div class="text-danger small">{{ form.password2.errors }}</div>{% endif %}
+        </div>
       {% endif %}
     </div>
   </div>
+
   <div class="mt-3">
     <a href="{% url 'cuentas_list' %}" class="btn btn-secondary">Volver</a>
     <button class="btn btn-primary" type="submit">Guardar</button>
