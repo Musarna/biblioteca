@@ -79,7 +79,7 @@ DATABASES = {
         'ENGINE': 'django.db.backends.mysql',   # mysqlclient o PyMySQL
         'NAME': 'biblioteca_db',
         'USER': 'biblioteca_user',
-        'PASSWORD': 'pass123',
+        'PASSWORD': 'pass12345',
         'HOST': '127.0.0.1',    # o la IP/hostname de tu server/MySQL Docker
         'PORT': '3306',
         'OPTIONS': {
